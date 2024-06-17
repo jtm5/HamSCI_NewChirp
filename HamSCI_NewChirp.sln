@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 17
+VisualStudioVersion = 17.10.35004.147
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "HamSCI_NewChirp", "HamSCI_NewChirp\HamSCI_NewChirp.pyproj", "{7816C3F2-1982-4D2A-A948-5F1E8655BDF1}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7816C3F2-1982-4D2A-A948-5F1E8655BDF1}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7816C3F2-1982-4D2A-A948-5F1E8655BDF1}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {0F184146-75AC-41F5-A91F-A4823A13E800}
+	EndGlobalSection
+EndGlobal
