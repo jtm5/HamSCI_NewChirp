@@ -47,3 +47,10 @@ double_chirp_length = 2.0 * up_down_chirp_length
 t_d = np.linspace(0, double_chirp_length, int(double_chirp_length * fs) )
 plot_it(double_chirp, "double", t_d)
 save_wave("double", double_chirp)
+
+# do it again for a quad chirp
+quad_chirp = np.concatenate( (double_chirp, double_chirp) )
+quad_chirp_length = 2.0 * double_chirp_length
+t_q = np.linspace(0, quad_chirp_length, int(quad_chirp_length * fs) )
+plot_it(quad_chirp, "quad", t_q)
+save_wave("quad", quad_chirp)
