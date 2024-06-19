@@ -1,5 +1,3 @@
-
-from tkinter import END
 import numpy as np
 from scipy.signal import chirp
 import matplotlib.pyplot as plt
@@ -13,44 +11,67 @@ fs = 48000 # same rate
 sweep_rate = 10 # hz/ms
 chirp_length = (BW /  sweep_rate) / 1000. # in seconds
 
-
-def plot_it(chirp, name, time):
-    chirp_size = len(chirp)
-    plt.plot(time, chirp)
-    plt.title(name)
-    plt.show()
-    return
-
-def save_wave(name, chirp):
-    wavWrite(name + ".wav", fs, chirp)
+# DEBUG functions run if True
+DEBUG = False
 
 
-# Calculate up and down chirp
-t_chirp = np.linspace(0, chirp_length, int(chirp_length * fs) )
-up_chirp = chirp(t_chirp, f0=low_freq, f1=high_freq, t1=chirp_length, method='linear')
-plot_it(up_chirp, "calc chirp", t_chirp)
-save_wave("calc chirp", up_chirp)
-down_chirp = chirp(t_chirp, f0=high_freq, f1=low_freq, t1=chirp_length, method='linear')
-plot_it(down_chirp, "calc chirp", t_chirp)
-save_wave("calc chirp", down_chirp)
+class chirp_element:
+    def __init__(self, low_freq, high_freq, fs, sweep_rate, name):
+        self.low_freq = low_freq
+        self.high_freq = high_freq
+        self.fs = fs
+        self.sweep_rate = sweep_rate
+        self.BW = high_freq - low_freq
+        self.length = (BW / sweep_rate) / 1000.  # in seconds
+        self.t_chirp = np.linspace(0, chirp_length, int(chirp_length * fs) )
+        self.chirp_array = chirp(self.t_chirp, f0=low_freq, f1=high_freq, t1=chirp_length, method='linear')
+        self.name = name
+        
+    def plot_it(self):
+        plt.plot(self.t_chirp, self.chirp_array)
+        plt.title(self.name)
+        plt.show()
+        return("didit")
+    
+    def save_wave(self):
+        wavWrite(self.name + ".wav", fs, self.chirp_array)
+        
+        
+class up_down_chirp_class:
+    def __init__(self, up_chirp, down_chirp, name):
+        self.up = up_chirp
+        self.down = down_chirp
+        self.chirp_array = 0.707 * np.concatenate((self.up.chirp_array, self.down.chirp_array)) 
+        self.chirp_length = len(self.chirp_array) / fs
+        self.t_chirp = np.linspace( 0, self.chirp_length, int( self.chirp_length * fs) )
+        self.name = name
+        
+    def plot_it(self):
+        plt.plot(self.t_chirp, self.chirp_array)
+        plt.title(self.name)
+        plt.show()
+        return("didit")
+    
+    def save_wave(self):
+        wavWrite(self.name + ".wav", fs, self.chirp_array)
 
-up_down_chirp = 0.707 * np.concatenate( (up_chirp, down_chirp) )        # WEIRD, but concat seems to want the two arrays as a TUPLE
-up_down_chirp_length = 2.0 * chirp_length
-t_up_down_chirp = np.linspace(0, up_down_chirp_length, int(up_down_chirp_length * fs) )
-plot_it(up_down_chirp, "up down", t_up_down_chirp)
-save_wave("upDown", up_down_chirp)
 
 
-# double the up down
-double_chirp = np.concatenate( (up_down_chirp, up_down_chirp) )
-double_chirp_length = 2.0 * up_down_chirp_length
-t_d = np.linspace(0, double_chirp_length, int(double_chirp_length * fs) )
-plot_it(double_chirp, "double", t_d)
-save_wave("double", double_chirp)
+if __name__ == "__main__":
 
-# do it again for a quad chirp
-quad_chirp = np.concatenate( (double_chirp, double_chirp) )
-quad_chirp_length = 2.0 * double_chirp_length
-t_q = np.linspace(0, quad_chirp_length, int(quad_chirp_length * fs) )
-plot_it(quad_chirp, "quad", t_q)
-save_wave("quad", quad_chirp)
+    # create up and down chirp elements
+    up_chirp = chirp_element(500, 2500, 48000, 10, "Up Chirp")   
+    down_chirp = chirp_element(2500, 500, 48000, 10, "Down Chirp")
+    up_down_chirp = up_down_chirp_class(up_chirp, down_chirp, "Up Down Chirp")
+    if DEBUG:
+        up_down_chirp.plot_it()
+    up_down_chirp.save_wave()
+    
+    # create a chain of up down chirps
+    chirp_chain = up_down_chirp.chirp_array
+    for i in range(0, 19, 1):
+        chirp_chain = np.concatenate( (chirp_chain, up_down_chirp.chirp_array) )
+        
+    wavWrite("chirpChain.wav", fs, chirp_chain)
+
+
