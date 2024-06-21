@@ -4,15 +4,15 @@ import matplotlib.pyplot as plt
 from scipy.io.wavfile import write as wavWrite
 
 # Define some global input values
-low_freq = 500  # in hz
-high_freq = 2500
+low_freq = 1000  # in hz
+high_freq = 2000
 BW = high_freq - low_freq
 fs = 48000 # same rate
-sweep_rate = 10 # hz/ms
+sweep_rate = 25 # hz/ms
 chirp_length = (BW /  sweep_rate) / 1000. # in seconds
 
 # DEBUG functions run if True
-DEBUG = False
+DEBUG = True
 
 
 class chirp_element:
@@ -60,16 +60,18 @@ class up_down_chirp_class:
 if __name__ == "__main__":
 
     # create up and down chirp elements
-    up_chirp = chirp_element(500, 2500, 48000, 10, "Up Chirp")   
-    down_chirp = chirp_element(2500, 500, 48000, 10, "Down Chirp")
+    up_chirp = chirp_element(low_freq, high_freq, 48000, 10, "Up Chirp")   
+    down_chirp = chirp_element(high_freq, low_freq, 48000, 10, "Down Chirp")
     up_down_chirp = up_down_chirp_class(up_chirp, down_chirp, "Up Down Chirp")
+    up_down_chirp.save_wave() 
+    
     if DEBUG:
         up_down_chirp.plot_it()
-    up_down_chirp.save_wave()
-    
-    # create a chain of up down chirps
+        
+          
+    # create a chain of up down chirps for a total 8 second signal
     chirp_chain = up_down_chirp.chirp_array
-    for i in range(0, 19, 1):
+    for i in range(0, 100, 1):
         chirp_chain = np.concatenate( (chirp_chain, up_down_chirp.chirp_array) )
         
     wavWrite("chirpChain.wav", fs, chirp_chain)
