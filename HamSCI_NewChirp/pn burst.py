@@ -60,7 +60,7 @@ axs.plot(np.linspace(0,1,2 * int(fs / 10) ), samp_static[0 : 9600])
 plt.show()
 
 np.save('samp_static', samp_static)
-wavWrite("BW wide PN.wav", fs, samp_static)
+wavWrite("BW wide_2 PN.wav", fs, samp_static)
 
 
 dummy = 0

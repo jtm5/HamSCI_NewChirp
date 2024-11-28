@@ -8,7 +8,7 @@ low_freq = 1000  # in hz
 high_freq = 2000
 BW = high_freq - low_freq
 fs = 48000 # same rate
-sweep_rate = 25 # hz/ms
+sweep_rate = 10 # hz/ms
 chirp_length = (BW /  sweep_rate) / 1000. # in seconds
 
 # DEBUG functions run if True
@@ -73,7 +73,13 @@ if __name__ == "__main__":
     chirp_chain = up_down_chirp.chirp_array
     for i in range(0, 100, 1):
         chirp_chain = np.concatenate( (chirp_chain, up_down_chirp.chirp_array) )
-        
-    wavWrite("chirpChain.wav", fs, chirp_chain)
+
+    fft_chirp_chain = np.fft.fft(chirp_chain)
+    freq = np.fft.fftfreq(len(fft_chirp_chain), d=1/fs)
+    plt.plot(freq, np.abs(fft_chirp_chain))
+    plt.title("FFT chirp chain")
+    plt.show()
+    
+    # wavWrite("chirpChain.wav", fs, chirp_chain)
 
 
