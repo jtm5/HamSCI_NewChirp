@@ -1,3 +1,4 @@
+from operator import truediv
 import numpy as np
 from scipy.signal import chirp
 import matplotlib.pyplot as plt
@@ -80,7 +81,7 @@ if __name__ == "__main__":
 
     # create a chain of up down chirps for a total 8 second signal
     chirp_chain = up_down_chirp.chirp_array
-    for i in range(0, 10, 1):
+    for i in range(0, 40, 1):
         chirp_chain = np.concatenate((chirp_chain, up_down_chirp.chirp_array))
 
     fft_chirp_chain = np.fft.fft(chirp_chain)
@@ -89,7 +90,14 @@ if __name__ == "__main__":
     plt.title("FFT chirp chain")
     plt.show()
 
-    wavWrite("chirpChain_10hz.wav", fs, chirp_chain)
+    # zero pad the chirp chain for Steve's initial tess
+    do_zero_pad = True
+    if do_zero_pad:
+        chirp_chain_padded = np.zeros(len(chirp_chain) + 48000)
+        for i in range(0, len(chirp_chain), 1):
+            chirp_chain_padded[i+24000] = chirp_chain[i]
+
+    wavWrite("chirpChain_10hz_8sec_padded.wav", fs, chirp_chain_padded)
 
     # create a 2 ms delayed version of the chirp chain
     chirp_chain_delayed = np.zeros(len(chirp_chain) + 96)
