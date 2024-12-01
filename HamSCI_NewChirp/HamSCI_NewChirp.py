@@ -1,4 +1,3 @@
-from operator import truediv
 import numpy as np
 from scipy.signal import chirp
 import matplotlib.pyplot as plt

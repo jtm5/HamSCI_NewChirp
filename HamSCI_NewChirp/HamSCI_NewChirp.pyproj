@@ -4,7 +4,7 @@
     <SchemaVersion>2.0</SchemaVersion>
     <ProjectGuid>7816c3f2-1982-4d2a-a948-5f1e8655bdf1</ProjectGuid>
     <ProjectHome>.</ProjectHome>
-    <StartupFile>HamSCI_NewChirp.py</StartupFile>
+    <StartupFile>pn burst.py</StartupFile>
     <SearchPath>
     </SearchPath>
     <WorkingDirectory>.</WorkingDirectory>
