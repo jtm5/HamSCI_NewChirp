@@ -92,11 +92,11 @@ if __name__ == "__main__":
     # zero pad the chirp chain for Steve's initial tess
     do_zero_pad = True
     if do_zero_pad:
-        chirp_chain_padded = np.zeros(len(chirp_chain) + 48000)
+        chirp_chain_padded = np.zeros((len(chirp_chain) + 48000), dtype=np.float32)
         for i in range(0, len(chirp_chain), 1):
             chirp_chain_padded[i+24000] = chirp_chain[i]
 
-    wavWrite("chirpChain_10hz_8sec_padded.wav", fs, chirp_chain_padded)
+        wavWrite("chirpChain_10hz_8sec_padded.wav", fs, chirp_chain_padded)
 
     # create a 2 ms delayed version of the chirp chain
     chirp_chain_delayed = np.zeros(len(chirp_chain) + 96)
